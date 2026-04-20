@@ -1,91 +1,782 @@
-# Famly DE Comparison Page — Prototype Guide
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Famly – Vergleich</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#6B21E8;--purple-dark:#4A13B0;--purple-light:#F3EFFE;--purple-mid:#9B5CF0;--purple-200:#DDD0FA;--cream:#FAF8F3;--cream-dark:#F2EDE3;--ink:#1A1A2E;--ink-mid:#4A4A6A;--ink-light:#9A9AB0;--white:#FFFFFF;--border:#E8E3F0;--border-strong:#C8C0E0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;font-weight:400;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;}
 
-**Status:** Concept prototype — content is placeholder, functionality is final  
-**Purpose:** Align on structure and logic before writing a developer spec
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.logo-text{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;}
+.nav-cta{font-size:14px;font-weight:700;padding:10px 22px;background:var(--purple);color:var(--white);border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:background 0.15s;}
+.nav-cta:hover{background:var(--purple-dark);}
 
----
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:60px 48px 0;text-align:center;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--purple-light);color:var(--purple-dark);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:22px;}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--purple);}
+.hero h1{font-size:clamp(36px,5vw,66px);font-weight:800;line-height:1.05;color:var(--ink);max-width:720px;margin:0 auto 16px;letter-spacing:-0.03em;}
+.hero h1 span{color:var(--purple);}
+.hero-sub{font-size:16px;color:var(--ink-mid);max-width:440px;margin:0 auto 0;line-height:1.65;}
 
-## What this prototype shows
+.metrics-bar{background:var(--cream-dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;justify-content:center;}
+.metric{flex:1;max-width:200px;padding:22px 16px;text-align:center;border-right:1px solid var(--border);}
+.metric:last-child{border-right:none;}
+.metric-num{font-size:36px;font-weight:800;color:var(--purple);line-height:1;margin-bottom:4px;letter-spacing:-0.02em;}
+.metric-lbl{font-size:11px;color:var(--ink-light);line-height:1.4;font-weight:600;}
 
-This is an interactive HTML prototype built to demonstrate how the comparison page works — not to show final copy. The content (feature rows, quotes, FAQ answers) is placeholder and will be replaced with validated content from the sales team before development begins.
+.trust-bar{background:var(--cream-dark);border-bottom:1px solid var(--border);padding:14px 48px;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;}
+.trust-label{font-size:11px;font-weight:700;color:var(--ink-light);letter-spacing:0.06em;text-transform:uppercase;}
+.trust-item{font-size:13px;font-weight:600;color:var(--ink-mid);}
+.stars{color:#F59E0B;}
 
-The core idea is that one page does the work of many: instead of building separate static pages for every competitor and every persona, a single page adapts to who is reading it and what system they're coming from.
+.selectors{max-width:800px;margin:0 auto;padding:48px 24px 0;}
+.selectors-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:16px;}
+.selector-group{text-align:center;}
+.selector-lbl{font-size:11px;font-weight:700;color:var(--ink-light);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;display:block;}
+.btn-group{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
+.sel-btn{font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;padding:8px 15px;border:2px solid var(--border-strong);border-radius:10px;background:var(--white);color:var(--ink-mid);cursor:pointer;transition:all 0.15s;}
+.sel-btn:hover{border-color:var(--purple-mid);color:var(--purple-dark);background:var(--purple-light);}
+.sel-btn.active{background:var(--purple);border-color:var(--purple);color:var(--white);}
+.custom-row{display:flex;gap:8px;max-width:320px;margin:12px auto 0;}
+.custom-row input{flex:1;font-family:'Nunito',sans-serif;font-size:13px;padding:8px 14px;border:2px solid var(--border-strong);border-radius:10px;background:var(--white);color:var(--ink);outline:none;transition:border-color 0.15s;}
+.custom-row input::placeholder{color:var(--ink-light);}
+.custom-row input:focus{border-color:var(--purple);}
+.custom-row button{font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px 14px;background:var(--purple);color:var(--white);border:none;border-radius:10px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
+.custom-row button:hover{background:var(--purple-dark);}
 
----
+.context-banner{max-width:900px;margin:28px auto 0;padding:0 40px;}
+.context-pill{background:var(--purple-light);border:1.5px solid var(--purple-200);border-radius:12px;padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--purple-dark);}
+.context-pill strong{font-weight:800;}
+.context-icon{font-size:16px;flex-shrink:0;}
 
-## How it works
+.main{max-width:940px;margin:0 auto;padding:48px 40px 100px;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+.section-title{font-size:clamp(22px,2.8vw,34px);font-weight:800;line-height:1.15;color:var(--ink);margin-bottom:24px;letter-spacing:-0.02em;}
 
-### Two selectors at the top
+.table-section{margin-bottom:10px;}
+.table-section-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.table-section-label{font-size:11px;font-weight:800;color:var(--ink-light);letter-spacing:0.09em;text-transform:uppercase;white-space:nowrap;}
+.table-section-line{flex:1;height:1px;background:var(--border);}
 
-Visitors (or sales reps) choose two things:
+.table-wrap{background:var(--white);border-radius:16px;overflow:hidden;border:2px solid var(--border);margin-bottom:18px;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--ink);}
+th{padding:13px 20px;font-size:11px;font-weight:700;text-align:left;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;}
+th.col-famly{background:var(--purple);color:rgba(255,255,255,0.9);}
+th.col-feat{width:26%;}
+td{padding:13px 20px;font-size:13px;font-weight:400;border-top:1px solid var(--border);vertical-align:top;line-height:1.5;}
+tr:hover td{background:#f9f8ff;}
+td.col-feat{font-weight:700;color:var(--ink);font-size:12.5px;}
+td.col-famly{background:#f8f5ff;color:var(--ink);}
+td.col-them{color:var(--ink-mid);background:#fdfcfc;}
+a.feat-link{color:var(--purple);text-decoration:none;font-size:11px;font-weight:700;margin-top:3px;display:block;}
+a.feat-link:hover{text-decoration:underline;}
 
-1. **Who they are** — Kita-Leitung, Träger / GF, Erzieher:in, or Fachberatung
-2. **What system they use today** — KiKom, Kitalino, Kitaplus, Tabellen & E-Mails, or Alle Systeme (generic)
+.testimonial{background:var(--purple-light);border:2px solid var(--purple-200);border-radius:18px;padding:32px 36px;margin-bottom:44px;position:relative;}
+.q-icon{font-size:60px;line-height:0.7;color:var(--purple-200);position:absolute;top:20px;left:24px;font-family:Georgia,serif;pointer-events:none;}
+.t-text{font-size:17px;font-weight:400;font-style:italic;color:var(--purple-dark);line-height:1.65;margin-bottom:16px;padding-left:22px;position:relative;}
+.t-author{display:flex;align-items:center;gap:12px;padding-left:22px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--white);flex-shrink:0;}
+.author-name{font-size:13px;font-weight:700;color:var(--purple-dark);}
+.author-role{font-size:12px;color:var(--purple-mid);margin-top:1px;}
 
-Every time either selector changes, the entire page updates: the comparison table, the section headers, the metrics strip, the customer quote, and the FAQ answers all reflect that specific combination.
+.migration{border:2px solid var(--purple);border-radius:16px;padding:22px 28px;margin-bottom:44px;display:flex;gap:16px;align-items:center;background:var(--white);}
+.mig-icon{font-size:26px;flex-shrink:0;}
+.mig-text h4{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.mig-text p{font-size:13px;color:var(--ink-mid);line-height:1.6;}
+.mig-btn{font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 18px;background:var(--purple);color:var(--white);border:none;border-radius:10px;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;display:inline-block;transition:background 0.15s;}
+.mig-btn:hover{background:var(--purple-dark);}
 
-### What changes per selection
+.objections{background:var(--white);border:2px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:44px;}
+.obj-item{border-bottom:1px solid var(--border);cursor:pointer;}
+.obj-item:last-child{border-bottom:none;}
+.obj-q{padding:17px 24px;font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:12px;user-select:none;transition:background 0.12s;}
+.obj-q:hover{background:var(--purple-light);}
+.obj-arrow{color:var(--purple);font-size:10px;transition:transform 0.2s;flex-shrink:0;}
+.obj-item.open .obj-arrow{transform:rotate(180deg);}
+.obj-a{padding:0 24px;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;font-size:13.5px;color:var(--ink-mid);line-height:1.75;}
+.obj-item.open .obj-a{max-height:300px;padding:2px 24px 20px;}
 
-**Competitor selector** changes:
-- The metrics strip at the top (e.g. "99.9% uptime" is relevant against KiKom's stability issues, "0€ DSGVO risk" is relevant against Tabellen)
-- The table column header and competitor name throughout
-- The customer quote (a different quote for each competitor)
-- The FAQ objections and answers
+hr{border:none;border-top:1px solid var(--border);margin:0 0 44px;}
+.cta{background:var(--purple);border-radius:20px;padding:56px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;top:-80px;left:-80px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.cta::after{content:'';position:absolute;bottom:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.cta h2{font-size:clamp(26px,4vw,44px);font-weight:800;color:var(--white);margin-bottom:12px;line-height:1.1;letter-spacing:-0.02em;position:relative;}
+.cta p{font-size:15px;color:rgba(255,255,255,0.6);margin-bottom:30px;max-width:360px;margin-left:auto;margin-right:auto;line-height:1.65;position:relative;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;}
+.btn-primary{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:13px 28px;background:var(--white);color:var(--purple-dark);border:none;border-radius:12px;cursor:pointer;text-decoration:none;transition:transform 0.15s,box-shadow 0.15s;display:inline-block;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+.btn-ghost{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:13px 28px;background:transparent;color:rgba(255,255,255,0.8);border:2px solid rgba(255,255,255,0.3);border-radius:12px;cursor:pointer;text-decoration:none;transition:all 0.15s;display:inline-block;}
+.btn-ghost:hover{background:rgba(255,255,255,0.1);color:var(--white);}
 
-**Persona selector** changes:
-- The table sections and rows (a Träger sees "Echtzeit-Dashboard alle Standorte" as the first row; an Erzieher:in sees "Anzahl Logins täglich")
-- The section labels (e.g. "Was Sie täglich kostet" for Kita-Leitung vs. "Träger-Übersicht & Kontrolle" for Träger)
-- The customer quote (same competitor, different persona perspective)
-- The FAQ questions and answers (persona-specific objections)
+.fade-up{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
 
-The context banner just below the selectors always confirms the current view: *"Sie sehen den Vergleich als Kita-Leitung — Famly vs. KiKom"*
+@media(max-width:640px){
+  nav{padding:0 20px;}
+  .hero{padding:48px 20px 0;}
+  .main{padding:36px 20px 80px;}
+  .selectors{padding:36px 20px 0;}
+  .selectors-grid{grid-template-columns:1fr;gap:20px;}
+  .context-banner{padding:0 20px;}
+  .metrics-bar{flex-wrap:wrap;}
+  .metric{max-width:50%;flex:1 1 45%;}
+  .trust-bar{gap:10px;padding:12px 20px;}
+  .migration{flex-direction:column;gap:14px;}
+  .cta{padding:40px 22px;}
+  th,td{padding:10px 12px;}
+  .testimonial{padding:24px 18px;}
+  .t-text{padding-left:14px;font-size:15px;}
+  .t-author{padding-left:14px;}
+  .q-icon{left:12px;}
+}
+</style>
+</head>
+<body>
 
----
+<nav>
+  <a href="https://famly.co/de" class="logo">
+    <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:2px">
+      <rect width="40" height="40" rx="9" fill="#6B21E8"/>
+      <path d="M20 9L33 20V34H25V26H15V34H7V20L20 9Z" fill="white" opacity="0.85"/>
+      <circle cx="20" cy="24" r="3.5" fill="#6B21E8"/>
+      <path d="M17 22.5C17 20.8 18.3 19.5 20 19.5C21.7 19.5 23 20.8 23 22.5V26C23 27.1 22.1 28 21 28H19C17.9 28 17 27.1 17 26V22.5Z" fill="white" opacity="0.6"/>
+    </svg>
+    <span class="logo-text">famly</span>
+  </a>
+  <a href="https://famly.co/de/demo" class="nav-cta">Demo buchen</a>
+</nav>
 
-## Two use cases, two audiences
+<div class="hero">
+  <div class="badge fade-up">Produktvergleich</div>
+  <h1 class="fade-up">Mehr Pädagogik,<br><span>weniger Bildschirmzeit.</span></h1>
+  <p class="hero-sub fade-up">Wählen Sie Ihre Rolle und Ihr aktuelles System — und sehen Sie genau, was Famly für Sie bedeutet.</p>
+</div>
 
-### 1. Generic version — public-facing
+<div class="metrics-bar fade-up">
+  <div class="metric"><div class="metric-num" id="m1">10h</div><div class="metric-lbl" id="m1l">weniger Admin<br>pro Woche</div></div>
+  <div class="metric"><div class="metric-num" id="m2">84%</div><div class="metric-lbl" id="m2l">der Mitarbeitenden<br>sparen täglich Zeit</div></div>
+  <div class="metric"><div class="metric-num" id="m3">4.8</div><div class="metric-lbl" id="m3l">Sterne auf<br>Capterra</div></div>
+  <div class="metric"><div class="metric-num" id="m4">2097</div><div class="metric-lbl" id="m4l">Kita-Standorte<br>in DACH</div></div>
+</div>
 
-The **Alle Systeme** option is the version we publish on famly.co. It compares Famly against a generic "Ihr aktuelles System" without naming any competitor. This is safe to publish, good for SEO, and works for any visitor who lands on the page organically.
+<div class="trust-bar">
+  <span class="trust-label">Vertrauen von</span>
+  <span class="trust-item"><span class="stars">★★★★★</span> Capterra (4.8)</span>
+  <span class="trust-item">🔴 Deutsches Rotes Kreuz</span>
+  <span class="trust-item">🏛️ AWO</span>
+  <span class="trust-item">⛪ VKMK</span>
+</div>
 
-The persona selector still works here — someone who identifies as a Träger sees different rows than an Erzieher:in, even in the generic version.
+<div class="selectors fade-up">
+  <div class="selectors-grid">
+    <div class="selector-group">
+      <span class="selector-lbl">Ich bin…</span>
+      <div class="btn-group" id="persona-btns">
+        <button class="sel-btn active" onclick="setPersona('kita-leitung',this)">Kita-Leitung</button>
+        <button class="sel-btn" onclick="setPersona('traeger',this)">Träger / GF</button>
+        <button class="sel-btn" onclick="setPersona('erzieher',this)">Erzieher:in</button>
+        <button class="sel-btn" onclick="setPersona('fachberatung',this)">Fachberatung</button>
+      </div>
+    </div>
+    <div class="selector-group">
+      <span class="selector-lbl">Ich nutze heute…</span>
+      <div class="btn-group" id="comp-btns">
+        <button class="sel-btn active" onclick="setComp('KiKom',this)">KiKom</button>
+        <button class="sel-btn" onclick="setComp('Kitalino',this)">Kitalino</button>
+        <button class="sel-btn" onclick="setComp('Kitaplus',this)">Kitaplus</button>
+        <button class="sel-btn" onclick="setComp('Tabellen',this)">Tabellen & E-Mails</button>
+      </div>
+      <button class="sel-btn" onclick="setComp('Generisch',this)">Alle Systeme</button>
+    </div>
+  </div>
+</div>
 
-### 2. Competitor-specific versions — sales tool
+<div class="context-banner fade-up">
+  <div class="context-pill">
+    <span class="context-icon">💡</span>
+    <span>Sie sehen den Vergleich als <strong id="banner-persona">Kita-Leitung</strong> — Famly vs. <strong id="banner-comp">KiKom</strong></span>
+  </div>
+</div>
 
-The KiKom, Kitalino, Kitaplus, and Tabellen versions are more direct. They name specific weaknesses, reference post-acquisition risks, and use pointed language that would be inappropriate on a public page.
+<div class="main">
+  <div class="eyebrow" id="comp-eyebrow">Famly vs. KiKom</div>
+  <div class="section-title">Was macht den Unterschied?</div>
+  <div id="tables-container" class="fade-up"></div>
 
-These versions are intended as a sales enablement tool — sent by SDRs or AEs as a link during or after a prospect conversation. The sales rep knows which competitor the prospect uses and can say: *"I'm sending you a comparison — it's specifically built for teams coming from KiKom."*
+  <div class="testimonial fade-up" id="testimonial-block"></div>
 
-The page doesn't say "KiKom" in the URL, just in the content — so it's shareable without being aggressively public.
+  <hr>
 
----
+  <div class="migration fade-up">
+    <div class="mig-icon">🚀</div>
+    <div class="mig-text">
+      <h4>Kostenloser Wechsel-Service inklusive</h4>
+      <p>Datenmigration, persönliches Onboarding und Support auf Deutsch — im Preis enthalten. Die meisten Kitas sind in wenigen Tagen produktiv.</p>
+    </div>
+    <a href="https://famly.co/de/demo" class="mig-btn">Demo anfragen</a>
+  </div>
 
-## What is placeholder vs. final
+  <hr>
 
-Everything marked `[PLACEHOLDER — Alex liefert Inhalt]` needs to be replaced before development. This includes:
+  <div class="eyebrow">Häufige Fragen</div>
+  <div class="section-title">Typische Bedenken — und unsere Antworten</div>
+  <div class="objections fade-up" id="faq-list"></div>
 
-- **Feature rows in the tables** — the structure (3 sections per competitor × 4 personas = 12 table variants per competitor) is final, but the specific rows and copy need validation from sales
-- **Metrics** — the numbers (10h, 84%, 4.8★) are real Famly data points; the competitor-specific ones (e.g. 99.9% uptime against KiKom) need confirmation
-- **Customer quotes** — all quotes are illustrative placeholders; real quotes will come from customer marketing
-- **FAQ answers** — structure and topics are correct, but copy needs review
+  <hr>
 
-What is **not** placeholder:
-- The page structure and layout
-- The dual-selector logic
-- The three-section table format (Kommunikation / Staffing / Plattform)
-- The persona × competitor matrix (16 combinations)
-- The metrics strip, trust bar, migration offer, and CTA
+  <div class="cta fade-up">
+    <h2>Bereit für den nächsten Schritt?</h2>
+    <p>Sehen Sie in einer persönlichen Demo, wie Famly Ihren Kita-Alltag verändert.</p>
+    <div class="cta-btns">
+      <a href="https://famly.co/de/demo" class="btn-primary">Demo buchen</a>
+      <a href="https://famly.co/de" class="btn-ghost">Mehr erfahren</a>
+    </div>
+  </div>
+</div>
 
----
+<script>
+const PH = '[PLACEHOLDER — Alex liefert Inhalt]';
 
-## Open questions before writing the dev spec
+const COMP_LABELS={'KiKom':'KiKom','Kitalino':'Kitalino','Kitaplus':'Kitaplus','Tabellen':'Tabellen & E-Mails','Generisch':'Ihr aktuelles System'};
 
-1. **Hosting** — will this live at famly.co/de/vergleich or as separate URLs per competitor (e.g. famly.co/de/vergleich/kikom)?
-2. **Tracking** — should competitor and persona selections be tracked as events in HubSpot or analytics? (Alex suggested this would be valuable for SDRs)
-3. **CTA destination** — should the "Demo buchen" button pass the selected competitor and persona as parameters to the demo booking form, so sales knows the context before the call?
-4. **Link format for sales** — should sales be able to share a URL that pre-selects a competitor (e.g. ?competitor=kikom&persona=traeger) so the right view loads immediately?
-5. **Content ownership** — who maintains the table content once live? Does it need a CMS, or is a developer editing the HTML file acceptable?
+const METRICS = {
+  KiKom:[{num:'99.9%',lbl:'App-Verfügbarkeit<br>garantiert'},{num:'10h',lbl:'weniger Admin<br>pro Woche'},{num:'1',lbl:'App statt<br>zwei Systeme'},{num:'4.8',lbl:'Sterne auf<br>Capterra'}],
+  Kitalino:[{num:'10h',lbl:'weniger Admin<br>pro Woche'},{num:'84%',lbl:'der Mitarbeitenden<br>sparen täglich Zeit'},{num:'4.8',lbl:'Sterne auf<br>Capterra'},{num:'2097',lbl:'Kita-Standorte<br>in DACH'}],
+  Kitaplus:[{num:'1',lbl:'App statt<br>drei Systeme'},{num:'10h',lbl:'weniger Admin<br>pro Woche'},{num:'84%',lbl:'der Mitarbeitenden<br>sparen täglich Zeit'},{num:'4.8',lbl:'Sterne auf<br>Capterra'}],
+  Tabellen:[{num:'10h',lbl:'weniger Admin<br>pro Woche'},{num:'0€',lbl:'DSGVO-Bußgeld-<br>Risiko mit Famly'},{num:'84%',lbl:'der Mitarbeitenden<br>sparen täglich Zeit'},{num:'4.8',lbl:'Sterne auf<br>Capterra'}]
+};
 
----
+const TABLES = {
+  KiKom:{
+    'kita-leitung':[
+      {label:'Kommunikation',rows:[
+        {feat:'Eltern-Nachrichten',famly:'✓ In-App, DSGVO-konform, alle Sprachen',them:'✓ Vorhanden',link:'https://famly.co/de/funktionen/kommunikation'},
+        {feat:'Team-Kommunikation',famly:'✓ Integriert, kein WhatsApp nötig',them:'✓ Vorhanden'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Staffing & Zeiterfassung — Ihr größter Zeitfresser',rows:[
+        {feat:'Betreuungsschlüssel',famly:'✓ Automatisch je Bundesland — immer sichtbar',them:'✗ Nicht als Kernfunktion'},
+        {feat:'Dienstplanung',famly:'✓ Echtzeit, kollaborativ — Sie sehen Lücken sofort',them:'⚠️ Eingeschränkt'},
+        {feat:'Abwesenheitsmanagement',famly:'✓ Automatische Benachrichtigungen bei Engpässen',them:'⚠️ Manuell nachverfolgen'},
+        {feat:'Qualifikationsnachweise',famly:'✓ Digital, Ablauferinnerungen automatisch',them:'✗ Nicht verfügbar'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform & Zuverlässigkeit',rows:[
+        {feat:'Einheitliche Plattform',famly:'✓ Alles in einer App — für Sie und Ihr Team',them:'⚠️ Benötigt Little Bird für Platzvergabe'},
+        {feat:'App-Stabilität',famly:'✓ 99.9% Verfügbarkeit',them:'✗ Abstürze in App Store gemeldet'},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'traeger':[
+      {label:'Träger-Übersicht & Kontrolle',rows:[
+        {feat:'Echtzeit-Dashboard alle Standorte',famly:'✓ Belegung, Staffing, Compliance — auf einen Blick',them:'✗ Nicht verfügbar'},
+        {feat:'Betreuungsschlüssel je Standort',famly:'✓ Automatisch, immer aktuell',them:'✗ Nicht als Kernfunktion'},
+        {feat:'Reporting & Export',famly:'✓ Audit-ready, DATEV-Integration',them:'⚠️ Begrenzt'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Staffing & Zeiterfassung',rows:[
+        {feat:'Zentrale Dienstplanung',famly:'✓ Übergreifend über alle Einrichtungen',them:'✗ Nicht als Kernfunktion'},
+        {feat:'Qualifikationsmanagement',famly:'✓ Digital, zentral, mit Ablauferinnerungen',them:'✗ Nicht verfügbar'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform & Risiko',rows:[
+        {feat:'Einheitliche Plattform',famly:'✓ Kein zweites System nötig',them:'⚠️ Benötigt Little Bird für Platzvergabe'},
+        {feat:'Nach der Übernahme',famly:'✓ Eigenständig — kein Fusionsrisiko',them:'✗ Teil von Little Bird — Roadmap unklar'},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland, ISO 27001',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'erzieher':[
+      {label:'Ihr Alltag im Gruppenraum',rows:[
+        {feat:'Anwesenheit erfassen',famly:'✓ In Sekunden, direkt im Gruppenraum',them:'⚠️ Umständlicher Prozess'},
+        {feat:'Nachrichten an Eltern',famly:'✓ DSGVO-konform, kein privates Gerät nötig',them:'✓ Vorhanden'},
+        {feat:'Dienstplan einsehen',famly:'✓ Immer aktuell, auf dem Handy',them:'⚠️ Nicht mobil optimiert'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Einfachheit & Einstieg',rows:[
+        {feat:'Einarbeitung',famly:'✓ ~30 Minuten bis zur selbstständigen Nutzung',them:'⚠️ Unterschiedliches Feedback'},
+        {feat:'App-Stabilität',famly:'✓ 99.9% Verfügbarkeit — läuft einfach',them:'✗ Abstürze in App Store gemeldet'},
+        {feat:'Mobile-first',famly:'✓ Für das Handy entwickelt',them:'⚠️ Primär Desktop'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Datenschutz',rows:[
+        {feat:'Kein privates Gerät nötig',famly:'✓ Alles über die Famly-App',them:'⚠️ Oft WhatsApp für schnelle Absprachen'},
+        {feat:'DSGVO',famly:'✓ Vollständig konform',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'fachberatung':[
+      {label:'Daten & Überblick',rows:[
+        {feat:'Einrichtungsübergreifende Daten',famly:'✓ Staffing, Belegung, Compliance — zentral',them:'✗ Nicht verfügbar'},
+        {feat:'Betreuungsschlüssel-Monitoring',famly:'✓ Automatisch, je Bundesland',them:'✗ Nicht als Kernfunktion'},
+        {feat:'Qualifikationsnachweise',famly:'✓ Übergreifend einsehbar',them:'✗ Nicht verfügbar'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Compliance & Reporting',rows:[
+        {feat:'Audit-ready Exporte',famly:'✓ Für Jugendamt, Träger, Berichte',them:'⚠️ Begrenzt'},
+        {feat:'DSGVO & Datensicherheit',famly:'✓ Deutsche Server, ISO 27001',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform',rows:[
+        {feat:'Einheitliche Plattform',famly:'✓ Eine Lösung für alle Einrichtungen',them:'⚠️ Benötigt Little Bird für Platzvergabe'},
+        {feat:'Nach der Übernahme',famly:'✓ Eigenständig — verlässlicher Partner',them:'✗ Roadmap nach Little Bird-Übernahme unklar'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ]
+  },
+  Kitalino:{
+    'kita-leitung':[
+      {label:'Kommunikation',rows:[
+        {feat:'Eltern-Nachrichten',famly:'✓ In-App, DSGVO-konform',them:'✓ Vorhanden',link:'https://famly.co/de/funktionen/kommunikation'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Staffing — warum Kita-Leitungen wechseln',rows:[
+        {feat:'Betreuungsschlüssel',famly:'✓ Automatisch je Bundesland — Kernfunktion',them:'⚠️ Vorhanden, nicht priorisiert'},
+        {feat:'Dienstplanung',famly:'✓ Echtzeit, kollaborativ',them:'⚠️ Vorhanden'},
+        {feat:'Qualifikationsnachweise',famly:'✓ Digital, Ablauferinnerungen',them:'⚠️ Begrenzt'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform',rows:[
+        {feat:'Einheitliche Plattform',famly:'✓ Organisch entwickelt',them:'⚠️ Wächst durch Übernahmen (Kidling)'},
+        {feat:'DATEV-Integration',famly:'✓ Vollständig',them:'⚠️ Begrenzt'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'traeger':[
+      {label:'Träger-Übersicht',rows:[
+        {feat:'Echtzeit-Dashboard alle Standorte',famly:'✓ Belegung, Staffing, Compliance',them:'⚠️ Eingeschränkte Mehrstandort-Übersichten'},
+        {feat:'Reporting & DATEV',famly:'✓ Vollständig integriert',them:'⚠️ Begrenzt'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Staffing & Zeiterfassung',rows:[
+        {feat:'Betreuungsschlüssel zentral',famly:'✓ Über alle Standorte in Echtzeit',them:'⚠️ Vorhanden, nicht als Kernfunktion'},
+        {feat:'Qualifikationsmanagement',famly:'✓ Zentral, mit Ablauferinnerungen',them:'⚠️ Begrenzt'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform & Risiko',rows:[
+        {feat:'Organisch entwickelt',famly:'✓ Keine Übernahme-Integrationsprobleme',them:'⚠️ Wächst durch Übernahmen'},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'erzieher':[
+      {label:'Ihr Alltag',rows:[
+        {feat:'Anwesenheit erfassen',famly:'✓ In Sekunden, mobil',them:'⚠️ Vorhanden'},
+        {feat:'App-Bedienung',famly:'✓ ~30 Min. Einarbeitung',them:'⚠️ Variiert je Modul'},
+        {feat:'Mobile-first',famly:'✓ Für das Handy entwickelt',them:'⚠️ Gemischte Bewertungen'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Datenschutz',rows:[
+        {feat:'DSGVO',famly:'✓ Vollständig konform, deutsche Server',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'fachberatung':[
+      {label:'Daten & Überblick',rows:[
+        {feat:'Einrichtungsübergreifende Staffing-Daten',famly:'✓ Zentral, aktuell',them:'⚠️ Eingeschränkt'},
+        {feat:'Betreuungsschlüssel-Monitoring',famly:'✓ Automatisch je Bundesland',them:'⚠️ Nicht als Kernfunktion'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Compliance',rows:[
+        {feat:'Audit-ready Exporte',famly:'✓ Für Jugendamt und Träger',them:'⚠️ Begrenzt'},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ]
+  },
+  Kitaplus:{
+    'kita-leitung':[
+      {label:'Was Sie täglich spüren',rows:[
+        {feat:'Betreuungsschlüssel',famly:'✓ Sofort auf der Startseite sichtbar',them:'⚠️ Tief vergraben in Admin-Oberfläche'},
+        {feat:'Dienstplanung',famly:'✓ Echtzeit, mobile-first',them:'⚠️ Desktop-first entwickelt'},
+        {feat:'Onboarding neuer Mitarbeitender',famly:'✓ ~30 Min. — eine App',them:'✗ Drei separate Systeme zu lernen'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Kommunikation',rows:[
+        {feat:'Eltern-Kommunikation',famly:'✓ In einer App mit allem anderen',them:'✓ Separate Eltern-App',link:'https://famly.co/de/funktionen/kommunikation'},
+        {feat:'Team-Kommunikation',famly:'✓ Integriert',them:'✓ Separate Gruppen-App'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform',rows:[
+        {feat:'Anzahl Apps',famly:'✓ Eine App für alle',them:'✗ 3 separate Apps'},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland',them:'✓ DSGVO-konform'},
+        {feat:'ISO 27001',famly:'✓ Zertifiziert',them:PH},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'traeger':[
+      {label:'Träger-Übersicht',rows:[
+        {feat:'Echtzeit-Dashboard alle Standorte',famly:'✓ Belegung, Staffing, Compliance',them:'⚠️ Fragmentiert über 3 Apps'},
+        {feat:'Einheitliche Datenbasis',famly:'✓ Alle Standorte, eine Quelle',them:'✗ Daten verteilt auf 3 Systeme'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Staffing',rows:[
+        {feat:'Betreuungsschlüssel zentral',famly:'✓ Über alle Standorte, automatisch',them:'⚠️ Tief vergraben, nicht Kernfunktion'},
+        {feat:'DATEV-Integration',famly:'✓ Vollständig',them:PH},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform & Risiko',rows:[
+        {feat:'Anzahl Apps für Ihr Team',famly:'✓ Eine',them:'✗ Drei'},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland, ISO 27001',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'erzieher':[
+      {label:'Ihr Alltag im Gruppenraum',rows:[
+        {feat:'Anzahl Logins täglich',famly:'✓ Einer — alles in einer App',them:'✗ Drei separate Logins'},
+        {feat:'Anwesenheit erfassen',famly:'✓ In Sekunden, auf dem Handy',them:'⚠️ Desktop-first — umständlich mobil'},
+        {feat:'Einarbeitung',famly:'✓ ~30 Minuten bis selbstständig',them:'✗ Drei Systeme zu lernen'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Datenschutz',rows:[
+        {feat:'DSGVO',famly:'✓ Vollständig konform',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'fachberatung':[
+      {label:'Daten & Überblick',rows:[
+        {feat:'Einrichtungsübergreifende Daten',famly:'✓ Zentral, ohne App-Wechsel',them:'✗ Verteilt auf 3 Apps'},
+        {feat:'Betreuungsschlüssel-Monitoring',famly:'✓ Automatisch, einrichtungsübergreifend',them:'⚠️ Vorhanden, tief vergraben'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Compliance',rows:[
+        {feat:'Audit-ready Exporte',famly:'✓ Für Jugendamt und Träger',them:PH},
+        {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland',them:'✓ DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ]
+  },
+  Tabellen:{
+    'kita-leitung':[
+      {label:'Was Sie täglich kostet',rows:[
+        {feat:'Dienstplanung',famly:'✓ Automatisch, Echtzeit, kollaborativ',them:'✗ Manuelle Tabellen — Fehler passieren'},
+        {feat:'Betreuungsschlüssel',famly:'✓ Automatisch je Bundesland',them:'✗ Täglich manuell berechnen'},
+        {feat:'Qualifikationsnachweise',famly:'✓ Digital, Ablauferinnerungen',them:'✗ Papierordner, keine Erinnerungen'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Kommunikation',rows:[
+        {feat:'Elternkommunikation',famly:'✓ In-App, DSGVO-konform',them:'✗ WhatsApp & E-Mail — Sie haften',link:'https://famly.co/de/funktionen/kommunikation'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Plattform',rows:[
+        {feat:'DSGVO-Konformität',famly:'✓ Deutsche Server, zertifiziert',them:'✗ WhatsApp = aktives Bußgeldrisiko'},
+        {feat:'Abrechnung & DATEV',famly:'✓ Automatisiert, ein Klick',them:'✗ Manuell in Excel'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'traeger':[
+      {label:'Überblick über alle Standorte',rows:[
+        {feat:'Echtzeit-Dashboard',famly:'✓ Belegung, Staffing, Compliance zentral',them:'✗ Keine zentrale Datenbasis'},
+        {feat:'Betreuungsschlüssel zentral',famly:'✓ Automatisch je Standort',them:'✗ Jede Einrichtung manuell'},
+        {feat:'DATEV-Integration',famly:'✓ Vollständig',them:'✗ Manuell in Excel'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Risiko & Compliance',rows:[
+        {feat:'DSGVO-Konformität',famly:'✓ Deutsche Server, ISO 27001',them:'✗ WhatsApp & E-Mails = aktives Risiko'},
+        {feat:'Audit-ready Exporte',famly:'✓ Für Jugendamt und Träger',them:'✗ Manuell zusammenstellen'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'erzieher':[
+      {label:'Ihr Alltag',rows:[
+        {feat:'Anwesenheit erfassen',famly:'✓ In Sekunden, auf dem Handy',them:'✗ Manuelle Liste oder Tabelle'},
+        {feat:'Elternnachricht senden',famly:'✓ DSGVO-konform — kein privates Handy',them:'✗ WhatsApp vom privaten Gerät'},
+        {feat:'Dienstplan einsehen',famly:'✓ Immer aktuell, auf dem Handy',them:'✗ Ausgedruckte Liste oder E-Mail'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Datenschutz',rows:[
+        {feat:'Kein privates Gerät nötig',famly:'✓ Alles über die Famly-App',them:'✗ WhatsApp über privates Handy'},
+        {feat:'DSGVO',famly:'✓ Vollständig konform',them:'✗ WhatsApp ist nicht DSGVO-konform'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ],
+    'fachberatung':[
+      {label:'Daten & Überblick',rows:[
+        {feat:'Einrichtungsübergreifende Daten',famly:'✓ Zentral, strukturiert, aktuell',them:'✗ Manuelle Zusammenführung'},
+        {feat:'Betreuungsschlüssel-Monitoring',famly:'✓ Automatisch, alle Einrichtungen',them:'✗ Jede Einrichtung separat'},
+        {feat:PH,famly:PH,them:PH}
+      ]},
+      {label:'Compliance',rows:[
+        {feat:'Audit-ready Exporte',famly:'✓ Für Jugendamt und Träger',them:'✗ Manuell aus Tabellen zusammenstellen'},
+        {feat:'DSGVO & Datensicherheit',famly:'✓ Server in Deutschland, ISO 27001',them:'✗ Kein strukturierter Datenschutz'},
+        {feat:PH,famly:PH,them:PH}
+      ]}
+    ]
+  }
+};
 
-*Prototype built April 2026. Maintained by the Marketing team.*
+const TESTIMONIALS = {
+  KiKom:{
+    'kita-leitung':{i:'SK',q:'Famly hat unsere tägliche Arbeit als Kita-Leitung grundlegend verändert. Dienstpläne, Betreuungsschlüssel, Elternkommunikation — alles in einer App. Mit KiKom fehlte uns immer, dass Staffing nicht wirklich integriert war.',n:'Sandra K.',r:'Kita-Leitung, Baden-Württemberg'},
+    'traeger':{i:'TM',q:'Als Träger mit mehreren Standorten war die Abhängigkeit von zwei Systemen ein echtes Problem. Famly gibt uns heute einen Echtzeit-Überblick über alle Einrichtungen — ohne Fusionsrisiko.',n:'Thomas M.',r:'Trägerleitung, Hessen'},
+    'erzieher':{i:'AK',q:'Famly läuft einfach. Keine Abstürze, keine langsamen Ladezeiten. Ich kann im Gruppenraum alles erledigen — ohne dass die App mich im Stich lässt.',n:'Andrea K.',r:'Erzieherin, Bayern'},
+    'fachberatung':{i:'MH',q:'Als Fachberatung brauche ich verlässliche Daten über mehrere Einrichtungen. Famly liefert das in Echtzeit — ohne dass ich auf verschiedene Systeme warten muss.',n:'Monika H.',r:'Fachberatung, Niedersachsen'}
+  },
+  Kitalino:{
+    'kita-leitung':{i:'PL',q:'Wir haben Kitalino ausprobiert, aber der Fokus auf Beobachtungsbögen war nicht das, was wir täglich brauchten. Mit Famly haben wir endlich ein System, das Staffing in den Mittelpunkt stellt.',n:'Peter L.',r:'Kita-Leitung, NRW'},
+    'traeger':{i:'TM',q:'Die Träger-Dashboards in Famly sind das, was uns überzeugt hat. Echtzeit-Belegung, Betreuungsschlüssel, Compliance — über alle Standorte auf einen Blick.',n:'Thomas M.',r:'Trägerleitung, Hessen'},
+    'erzieher':{i:'AK',q:'Famly ist so einfach, dass ich in Minuten einsatzbereit war. Kein langes Einarbeiten, kein Handbuch — einfach loslegen.',n:'Andrea K.',r:'Erzieherin, Bayern'},
+    'fachberatung':{i:'MH',q:'Famly gibt mir die Daten, die ich für meine Beratungsarbeit brauche — zuverlässig, aktuell und über mehrere Einrichtungen hinweg.',n:'Monika H.',r:'Fachberatung, Niedersachsen'}
+  },
+  Kitaplus:{
+    'kita-leitung':{i:'SK',q:'Drei Apps für eine Einrichtung — das war mit Kitaplus unser Alltag. Famly hat das auf eine App reduziert. Unsere Erzieher:innen nutzen es täglich, ohne Aufforderung.',n:'Sandra K.',r:'Kita-Leitung, Baden-Württemberg'},
+    'traeger':{i:'TM',q:'Der größte Unterschied: Unsere Erzieher:innen nutzen Famly freiwillig. Das war mit drei separaten Kitaplus-Apps nie der Fall. Und die Datenqualität hat sich dadurch enorm verbessert.',n:'Thomas M.',r:'Trägerleitung, Hessen'},
+    'erzieher':{i:'LB',q:'Ich musste früher drei verschiedene Logins für drei verschiedene Apps haben. Mit Famly gibt es eine App — und ich finde alles in Sekunden.',n:'Lena B.',r:'Erzieherin, Berlin'},
+    'fachberatung':{i:'MH',q:'Mit Famly habe ich zum ersten Mal einen konsolidierten Überblick über Staffing und Compliance — ohne zwischen verschiedenen Kitaplus-Modulen wechseln zu müssen.',n:'Monika H.',r:'Fachberatung, Niedersachsen'}
+  },
+  Tabellen:{
+    'kita-leitung':{i:'AK',q:'Wir haben vorher alles in Excel gemacht. Der Wechsel zu Famly hat uns in der ersten Woche schon 8 Stunden gespart — und unsere Erzieher:innen müssen nicht mehr auf WhatsApp kommunizieren.',n:'Andrea K.',r:'Kita-Leiterin, Bayern'},
+    'traeger':{i:'TM',q:'Als Träger mit mehreren Standorten war der Überblick mit Tabellen unmöglich. Famly gibt uns heute Echtzeit-Dashboards — und das DSGVO-Risiko durch WhatsApp ist Geschichte.',n:'Thomas M.',r:'Trägerleitung, Hessen'},
+    'erzieher':{i:'LB',q:'Kein Excel mehr, kein WhatsApp für Eltern. Famly ist DSGVO-konform und so einfach, dass ich in Minuten alles erledige — und mehr Zeit bei den Kindern habe.',n:'Lena B.',r:'Erzieherin, Berlin'},
+    'fachberatung':{i:'MH',q:'Verlässliche Daten statt Tabellen-Chaos. Mit Famly habe ich endlich einen strukturierten Überblick über alle Einrichtungen — ohne manuelle Zusammenführung.',n:'Monika H.',r:'Fachberatung, Niedersachsen'}
+  }
+};
+
+const FAQS = {
+  KiKom:{
+    'kita-leitung':[
+      {q:'„Wir nutzen KiKom für Kommunikation — das reicht uns."',a:'Als Kita-Leitung fehlt Ihnen mit KiKom das zentrale Werkzeug: Dienstplanung und Betreuungsschlüssel. Famly deckt beides ab — in derselben App, ohne zweites System.'},
+      {q:'„KiKom ist Teil von Little Bird — das gibt uns mehr Features."',a:'Möglicherweise langfristig. Aber jede Übernahme bringt Integrationsunsicherheit. Famly ist heute schon vollständig — und eigenständig.'},
+      {q:'„Wechseln ist zu aufwändig."',a:'Die meisten Kita-Leitungen sind in wenigen Tagen produktiv. Wir begleiten Sie Schritt für Schritt — auf Deutsch, im Preis enthalten.'}
+    ],
+    'traeger':[
+      {q:'„Wir haben KiKom für alle unsere Standorte eingeführt."',a:'Als Träger fehlt Ihnen mit KiKom ein zentrales Dashboard. Famly gibt Ihnen Echtzeit-Überblick über Belegung, Staffing und Compliance — über alle Standorte.'},
+      {q:'„KiKom + Little Bird deckt alles ab."',a:'Zwei Systeme bedeuten doppelter Aufwand, doppelte Kosten, doppelte Lernkurve. Famly ersetzt beides in einer App.'},
+      {q:'„Datenmigration ist zu komplex."',a:'Alle Stammdaten werden migriert. Unser Team begleitet den Übergang von Datenmigration bis Go-Live — für alle Standorte koordiniert.'}
+    ],
+    'erzieher':[
+      {q:'„KiKom ist das, was unser Team kennt."',a:'Famly ist intuitiver als KiKom — die meisten Erzieher:innen sind ohne Schulung in Minuten einsatzbereit. Und es stürzt nicht ab.'},
+      {q:'„Wir wollen nicht wieder umlernen."',a:'Famly fühlt sich an wie eine App, die man schon kennt. Durchschnittlich 30 Minuten bis zum ersten selbstständigen Einsatz.'}
+    ],
+    'fachberatung':[
+      {q:'„KiKom gibt mir die Kommunikationsdaten, die ich brauche."',a:'Famly gibt Ihnen zusätzlich Staffing-Daten, Betreuungsschlüssel und Qualifikationsnachweise — alles zentral, über alle Einrichtungen hinweg.'},
+      {q:'„Wechsel bedeutet Aufwand für alle Einrichtungen."',a:'Famly hat dedizierte Onboarding-Teams für Multi-Site-Rollouts. Wir koordinieren den Übergang über alle Einrichtungen.'}
+    ]
+  },
+  Kitalino:{
+    'kita-leitung':[
+      {q:'„Kitalino hat Beobachtungsbögen — das brauchen wir."',a:'Famly fokussiert auf Staffing und Admin — was für die meisten Kita-Leitungen der größte Zeitfresser ist. Wenn Beobachtungsbögen Ihre Hauptanforderung sind, sprechen wir das gerne offen durch.'},
+      {q:'„Kitalino kennt den deutschen Markt."',a:'Famly auch: Bundesland-spezifische Betreuungsschlüssel, DATEV, ISBJ Berlin, DSGVO auf deutschen Servern.'}
+    ],
+    'traeger':[
+      {q:'„Kitalino deckt unsere Träger-Anforderungen ab."',a:'Famly bietet Echtzeit-Dashboards über alle Standorte — Belegung, Staffing, Compliance — auf einen Blick. Das ist die Kernfunktion, die viele Träger bei Kitalino vermissen.'},
+      {q:'„Kitalino ist durch Übernahmen gewachsen — das ist positiv."',a:'Wachstum durch Übernahmen bringt technische Integration mit sich. Famly ist organisch entwickelt — eine Plattform als Ganzes.'}
+    ],
+    'erzieher':[
+      {q:'„Kitalino ist auch einfach."',a:'Famly-Nutzer sind ohne Schulung in Minuten einsatzbereit. 84 % sagen, sie sparen täglich Zeit.'}
+    ],
+    'fachberatung':[
+      {q:'„Kitalino hat Beobachtungsbögen — für meine Beratung wichtig."',a:'Famly fokussiert auf Staffing-Daten und Compliance — was für die meisten Fachberatungen der kritischere Bereich ist.'}
+    ]
+  },
+  Kitaplus:{
+    'kita-leitung':[
+      {q:'„Kitaplus ist bei unserem Trägerverband etabliert."',a:'Trägernetzwerke sind wichtig. Aber als Kita-Leitung merken Sie täglich, dass Kitaplus für die Verwaltung gebaut ist — nicht für Ihr Team. Famly ist für alle.'},
+      {q:'„Drei Apps sind komplex — aber wir kennen das System."',a:'Famly-Kunden berichten, dass neues Personal in Minuten eingearbeitet ist. Das spart Ihnen Zeit bei jedem neuen Teammitglied.'}
+    ],
+    'traeger':[
+      {q:'„Kitaplus deckt alle Bundesländer ab."',a:'Famly auch: bundeslandspezifische Betreuungsschlüssel, ISBJ Berlin, DATEV. Und mit einem Dashboard statt drei Apps haben Sie als Träger einen besseren Überblick.'},
+      {q:'„Wir haben Kitaplus gerade erst eingeführt."',a:'Das ist nachvollziehbar. Wir machen gerne eine Demo ohne Druck — damit Sie selbst entscheiden können.'}
+    ],
+    'erzieher':[
+      {q:'„Ich kenne Kitaplus — Famly müsste ich neu lernen."',a:'Famly-Erzieher:innen sind im Schnitt in 30 Minuten selbstständig. Und dann nutzen sie es freiwillig — das ist der entscheidende Unterschied.'}
+    ],
+    'fachberatung':[
+      {q:'„Kitaplus ist in meinen Einrichtungen verbreitet."',a:'Famly gibt Ihnen als Fachberatung einen konsolidierten Überblick über alle Einrichtungen — ohne zwischen drei Kitaplus-Apps wechseln zu müssen.'}
+    ]
+  },
+  Tabellen:{
+    'kita-leitung':[
+      {q:'„Unsere Tabellen funktionieren — warum ändern?"',a:'Als Kita-Leitung kostet jede manuelle Eingabe Zeit — und ist ein Fehlerrisiko beim Betreuungsschlüssel. Famly nimmt Ihnen diese Fehlerquelle komplett weg.'},
+      {q:'„WhatsApp ist schnell und alle kennen es."',a:'Famly ist genauso schnell — aber DSGVO-konform. Als Kita-Leitung haften Sie für Datenschutzverstöße. Famly schützt Sie rechtlich.'},
+      {q:'„Software kostet Geld — Tabellen sind kostenlos."',a:'Die versteckten Kosten von Tabellen: Stunden für manuelle Arbeit, Fehler in der Abrechnung, DSGVO-Risiken. Die meisten Kita-Leitungen berichten, dass Famly sich in Wochen amortisiert.'}
+    ],
+    'traeger':[
+      {q:'„Wir haben Tabellen für alle Standorte — das funktioniert."',a:'Als Träger mit mehreren Standorten ist der Überblick mit Tabellen das größte Problem. Famly gibt Ihnen Echtzeit-Dashboards — ohne manuelle Zusammenführung.'},
+      {q:'„DSGVO ist kein Thema für uns."',a:'WhatsApp für Elternkommunikation ist ein aktives Bußgeldrisiko. Famly eliminiert dieses Risiko vollständig — auf deutschen Servern, zertifiziert.'}
+    ],
+    'erzieher':[
+      {q:'„Ich nutze WhatsApp — das ist einfach."',a:'Famly ist genauso einfach — aber Sie nutzen kein privates Gerät für die Arbeit. Ihre Privatsphäre bleibt geschützt.'},
+      {q:'„Noch eine App — das ist zu viel."',a:'Famly ersetzt WhatsApp, Excel-Tabellen und Papierordner. Am Ende haben Sie weniger Apps, nicht mehr.'}
+    ],
+    'fachberatung':[
+      {q:'„Die Einrichtungen nutzen Tabellen — ich passe mich an."',a:'Mit Famly haben Sie als Fachberatung verlässliche, strukturierte Daten aus allen Einrichtungen — statt manuell zusammengeführter Tabellen.'}
+    ]
+  }
+};
+
+METRICS['Generisch']=[{num:'10h',lbl:'weniger Admin<br>pro Woche'},{num:'84%',lbl:'der Mitarbeitenden<br>sparen täglich Zeit'},{num:'4.8',lbl:'Sterne auf<br>Capterra'},{num:'2097',lbl:'Kita-Standorte<br>in DACH'}];
+
+TABLES['Generisch']={
+  'kita-leitung':[
+    {label:'Was Kita-Leitungen täglich brauchen',rows:[
+      {feat:'Betreuungsschlüssel automatisch',famly:'✓ Je Bundesland, immer aktuell',them:'⚠️ Häufig manuell oder nicht vorhanden'},
+      {feat:'Dienstplanung',famly:'✓ Echtzeit, kollaborativ',them:'⚠️ Unterschiedlich je System'},
+      {feat:'Qualifikationsnachweise',famly:'✓ Digital, Ablauferinnerungen',them:'⚠️ Oft in Papierform oder separat'},
+      {feat:PH,famly:PH,them:PH}
+    ]},
+    {label:'Kommunikation',rows:[
+      {feat:'Elternkommunikation',famly:'✓ In-App, DSGVO-konform',them:'⚠️ Abhängig von Ihrem System',link:'https://famly.co/de/funktionen/kommunikation'},
+      {feat:PH,famly:PH,them:PH}
+    ]},
+    {label:'Plattform',rows:[
+      {feat:'Einheitliche Plattform',famly:'✓ Alle Funktionen in einer App',them:'⚠️ Häufig Zusatzsoftware nötig'},
+      {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland, ISO 27001',them:'⚠️ Abhängig von Anbieter'},
+      {feat:PH,famly:PH,them:PH}
+    ]}
+  ],
+  'traeger':[
+    {label:'Träger-Übersicht & Kontrolle',rows:[
+      {feat:'Echtzeit-Dashboard alle Standorte',famly:'✓ Belegung, Staffing, Compliance',them:'⚠️ Selten als Standard-Feature'},
+      {feat:'Betreuungsschlüssel zentral',famly:'✓ Automatisch, alle Einrichtungen',them:'⚠️ Häufig manuell je Standort'},
+      {feat:'DATEV-Integration',famly:'✓ Vollständig',them:'⚠️ Häufig begrenzt'},
+      {feat:PH,famly:PH,them:PH}
+    ]},
+    {label:'Plattform & Risiko',rows:[
+      {feat:'Einheitliche Plattform',famly:'✓ Kein zweites System nötig',them:'⚠️ Häufig Zusatzsoftware nötig'},
+      {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland, ISO 27001',them:'⚠️ Abhängig von Anbieter'},
+      {feat:PH,famly:PH,them:PH}
+    ]}
+  ],
+  'erzieher':[
+    {label:'Ihr Alltag im Gruppenraum',rows:[
+      {feat:'Anwesenheit erfassen',famly:'✓ In Sekunden, direkt mobil',them:'⚠️ Abhängig von Ihrem System'},
+      {feat:'Mobile-first',famly:'✓ Für das Handy entwickelt',them:'⚠️ Oft Desktop-first'},
+      {feat:'Einarbeitung',famly:'✓ ~30 Minuten bis selbstständig',them:'⚠️ Unterschiedlich je System'},
+      {feat:PH,famly:PH,them:PH}
+    ]},
+    {label:'Datenschutz',rows:[
+      {feat:'DSGVO & Kein privates Gerät nötig',famly:'✓ Alles über die Famly-App',them:'⚠️ Oft WhatsApp oder private E-Mails'},
+      {feat:PH,famly:PH,them:PH}
+    ]}
+  ],
+  'fachberatung':[
+    {label:'Daten & Überblick',rows:[
+      {feat:'Einrichtungsübergreifende Daten',famly:'✓ Staffing, Belegung, Compliance zentral',them:'⚠️ Selten als Standard-Feature'},
+      {feat:'Betreuungsschlüssel-Monitoring',famly:'✓ Automatisch je Bundesland',them:'⚠️ Häufig nicht als Kernfunktion'},
+      {feat:PH,famly:PH,them:PH}
+    ]},
+    {label:'Compliance',rows:[
+      {feat:'Audit-ready Exporte',famly:'✓ Für Jugendamt und Träger',them:'⚠️ Häufig manuell'},
+      {feat:'DSGVO & Deutsche Server',famly:'✓ Server in Deutschland, ISO 27001',them:'⚠️ Abhängig von Anbieter'},
+      {feat:PH,famly:PH,them:PH}
+    ]}
+  ]
+};
+
+TESTIMONIALS['Generisch']={
+  'kita-leitung':{i:'SK',q:'Famly hat unsere tägliche Arbeit als Kita-Leitung grundlegend verändert. Dienstpläne, Betreuungsschlüssel, Elternkommunikation — alles in einer App. Was früher Stunden dauerte, geht heute in Minuten.',n:'Sandra K.',r:'Kita-Leitung, Baden-Württemberg'},
+  'traeger':{i:'TM',q:'Als Träger mit mehreren Standorten brauchten wir endlich einen zentralen Überblick. Famly gibt uns Echtzeit-Dashboards über Belegung, Staffing und Compliance — über alle Einrichtungen auf einen Blick.',n:'Thomas M.',r:'Trägerleitung, Hessen'},
+  'erzieher':{i:'AK',q:'Famly ist so einfach, dass ich in Minuten einsatzbereit war. Kein langes Einarbeiten, kein Handbuch — und ich spare täglich Zeit, die ich jetzt bei den Kindern verbringen kann.',n:'Andrea K.',r:'Erzieherin, Bayern'},
+  'fachberatung':{i:'MH',q:'Famly gibt mir die Daten, die ich für meine Beratungsarbeit brauche — zuverlässig, aktuell und über mehrere Einrichtungen hinweg. Das hat meine Arbeit fundamental verändert.',n:'Monika H.',r:'Fachberatung, Niedersachsen'}
+};
+
+FAQS['Generisch']={
+  'kita-leitung':[
+    {q:'„Unser aktuelles System funktioniert — warum wechseln?"',a:'Das verstehen wir gut. Famly ist speziell für den deutschen Kita-Alltag entwickelt: Betreuungsschlüssel je Bundesland, DATEV, DSGVO auf deutschen Servern — und eine App, die Erzieher:innen wirklich täglich nutzen wollen.'},
+    {q:'„Was unterscheidet Famly von anderen Kita-Software-Lösungen?"',a:'Famly stellt Staffing in den Mittelpunkt — nicht als Zusatz, sondern als Kernfunktion. Betreuungsschlüssel, Dienstplanung und Qualifikationsnachweise sind von Tag 1 sofort sichtbar und nutzbar.'},
+    {q:'„Wie aufwändig ist der Wechsel?"',a:'Die meisten Kita-Leitungen sind in wenigen Tagen produktiv. Datenmigration, Onboarding und persönlicher Support auf Deutsch sind im Preis enthalten.'}
+  ],
+  'traeger':[
+    {q:'„Was bietet Famly für Träger mit mehreren Standorten?"',a:'Echtzeit-Dashboards über alle Einrichtungen: Belegung, Betreuungsschlüssel, Staffing, Compliance — auf einen Blick. Keine manuelle Zusammenführung aus verschiedenen Quellen.'},
+    {q:'„Wie funktioniert die Datenmigration bei einem Trägerwechsel?"',a:'Alle Stammdaten werden migriert. Unser Team koordiniert den Übergang über alle Standorte hinweg — von der ersten Datenmigration bis zum Go-Live jeder Einrichtung.'},
+    {q:'„Wie sicher sind unsere Daten bei Famly?"',a:'Famly speichert alle Daten auf deutschen Servern, ist ISO 27001-zertifiziert und vollständig DSGVO-konform. Wir sind transparenter Auftragsverarbeiter.'}
+  ],
+  'erzieher':[
+    {q:'„Ich habe keine Zeit, eine neue App zu lernen."',a:'Famly-Erzieher:innen sind im Schnitt in 30 Minuten selbstständig. Die App ist so gebaut, dass sie sich anfühlt wie etwas, das man schon kennt.'},
+    {q:'„Warum brauche ich eine App im Gruppenraum?"',a:'Famly läuft auf jedem Gerät, auch auf dem Handy. Anwesenheit erfassen, Nachrichten lesen, Dienstplan checken — alles in Sekunden, ohne Unterbrechung.'}
+  ],
+  'fachberatung':[
+    {q:'„Welche Daten liefert Famly für Beratungsarbeit?"',a:'Staffing-Daten, Betreuungsschlüssel, Qualifikationsnachweise und Compliance-Status — zentral, aktuell und über mehrere Einrichtungen hinweg. Kein manuelles Zusammentragen mehr.'},
+    {q:'„Wie unterstützt Famly bei der Einführung in mehreren Einrichtungen?"',a:'Famly bietet dedizierte Onboarding-Teams für Multi-Site-Rollouts. Wir begleiten Träger und Einrichtungen Schritt für Schritt.'}
+  ]
+};
+
+const PERSONA_LABELS={'kita-leitung':'Kita-Leitung','traeger':'Träger / GF','erzieher':'Erzieher:in','fachberatung':'Fachberatung'};
+let currentPersona='kita-leitung', currentComp='KiKom';
+
+function render(){
+  const p=currentPersona, c=currentComp;
+  const compLabel = COMP_LABELS[c]||c;
+
+  document.getElementById('banner-persona').textContent=PERSONA_LABELS[p];
+  document.getElementById('banner-comp').textContent=compLabel;
+  document.getElementById('comp-eyebrow').textContent='Famly vs. '+compLabel;
+
+  // Metrics
+  const m=METRICS[c]||METRICS.KiKom;
+  ['m1','m2','m3','m4'].forEach((id,i)=>{
+    document.getElementById(id).textContent=m[i].num;
+    document.getElementById(id+'l').innerHTML=m[i].lbl;
+  });
+
+  // Tables — look up by competitor then persona
+  const compTables = TABLES[c] || TABLES.KiKom;
+  const sections = compTables[p] || compTables['kita-leitung'];
+  document.getElementById('tables-container').innerHTML=sections.map(s=>`
+    <div class="table-section">
+      <div class="table-section-header">
+        <div class="table-section-line"></div>
+        <div class="table-section-label">${s.label}</div>
+        <div class="table-section-line"></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="col-feat">Funktion</th><th class="col-famly">Famly</th><th>${compLabel}</th></tr></thead>
+        <tbody>${s.rows.map(r=>`
+          <tr>
+            <td class="col-feat">${r.feat}</td>
+            <td class="col-famly">${r.famly}${r.link?`<a href="${r.link}" target="_blank" class="feat-link">Mehr erfahren →</a>`:''}</td>
+            <td class="col-them">${r.them}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>
+    </div>`).join('');
+
+  // Testimonial
+  const t=(TESTIMONIALS[c]||TESTIMONIALS.KiKom)[p];
+  document.getElementById('testimonial-block').innerHTML=`
+    <div class="q-icon">"</div>
+    <div class="t-text">${t.q}</div>
+    <div class="t-author"><div class="avatar">${t.i}</div><div><div class="author-name">${t.n}</div><div class="author-role">${t.r}</div></div></div>`;
+
+  // FAQ
+  const faqs=((FAQS[c]||FAQS.KiKom)[p])||[];
+  document.getElementById('faq-list').innerHTML=faqs.length
+    ?faqs.map(o=>`<div class="obj-item" onclick="this.classList.toggle('open')"><div class="obj-q">${o.q}<span class="obj-arrow">▼</span></div><div class="obj-a">${o.a}</div></div>`).join('')
+    :`<div style="padding:18px 24px;font-size:13px;color:var(--ink-light);">${PH}</div>`;
+}
+
+function setPersona(p,btn){
+  currentPersona=p;
+  document.querySelectorAll('#persona-btns .sel-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setComp(c,btn){
+  currentComp=c;
+  document.querySelectorAll('#comp-btns .sel-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('customInput').value='';
+  render();
+}
+
+
+
+
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.06});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+render();
+</script>
+</body>
+</html>
